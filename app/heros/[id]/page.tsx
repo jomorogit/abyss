@@ -2,13 +2,15 @@ import React from 'react';
 import { prisma } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
-// 📦 Импортируем типы Prisma для точного описания вложенных связей
-import { Prisma } from '@prisma/client';
 
-// 🎯 Выводим тип героя, автоматически включающий в себя массив skills
-type HeroWithSkills = Prisma.HeroGetPayload<{
-  include: { skills: true }
-}>;
+// 🎯 Выводим точный тип героя со всеми вложенными релейшнами напрямую из запроса базы!
+type HeroWithSkills = Awaited<
+  ReturnType<
+    typeof prisma.hero.findUnique<{
+      include: { skills: true };
+    }>
+  >
+>;
 
 interface PageProps {
   params: Promise<{ id: string }>; 
@@ -18,13 +20,12 @@ export default async function HeroCardPage({ params }: PageProps) {
   const { id } = await params;
 
   // Ищем героя + подтягиваем его скиллы 🗄️✨
-  // Принудительно приводим к типу HeroWithSkills | null, чтобы намертво зафиксировать схему данных
   const heroItem = await prisma.hero.findUnique({
     where: { id: id },
     include: {
       skills: true, // Включаем связанные скиллы героя
     }
-  }) as HeroWithSkills | null;
+  }) as HeroWithSkills; // Приводим к нашему выведенному типу
 
   // Если герой не найден 🛑
   if (!heroItem) {
@@ -118,7 +119,7 @@ export default async function HeroCardPage({ params }: PageProps) {
             <div className="mt-auto">
               <h3 className="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Уникальные способности ✨</h3>
               
-              {heroItem.skills.length > 0 ? (
+              {heroItem.skills && heroItem.skills.length > 0 ? (
                 <div className="space-y-3">
                   {heroItem.skills.map((skill) => (
                     <div key={skill.id} className="bg-gray-900/80 p-4 rounded-xl border border-gray-700">
