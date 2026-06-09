@@ -16,12 +16,17 @@ interface DropItem {
   isDroppable: boolean;
 }
 
+// 🎯 Вытаскиваем точные типы одиночных сущностей напрямую из базы Prisma
+type WeaponItem = Awaited<ReturnType<typeof prisma.weapon.findMany>>[number];
+type ArmorItem = Awaited<ReturnType<typeof prisma.armor.findMany>>[number];
+type ArtifactItem = Awaited<ReturnType<typeof prisma.artifact.findMany>>[number];
+
 export default async function DropPage() {
-  // 1. Получаем данные из трех разных таблиц, строго ограничивая выборку по условию isDroppable
+  // 1. Строго типизируем деструктуризацию результатов промиса, защищая 'w', 'a' от типа any
   const [weapons, armors, artifacts] = await Promise.all([
-    prisma.weapon.findMany({ where: { isDroppable: true } }),
-    prisma.armor.findMany({ where: { isDroppable: true } }),
-    prisma.artifact.findMany({ where: { isDroppable: true } }),
+    prisma.weapon.findMany({ where: { isDroppable: true } }) as Promise<WeaponItem[]>,
+    prisma.armor.findMany({ where: { isDroppable: true } }) as Promise<ArmorItem[]>,
+    prisma.artifact.findMany({ where: { isDroppable: true } }) as Promise<ArtifactItem[]>,
   ]);
 
   // 2. Приводим все данные к единому формату и объединяем в один строго типизированный массив
