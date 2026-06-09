@@ -1,76 +1,136 @@
-import React from 'react'
-import Link from 'next/link'
+"use client"; // Обязательно добавляем, так как теперь используются состояния (useState)
+
+import React, { useState } from 'react';
+import Link from 'next/link';
 
 export default function TopBar() {
+  // Состояние 📊 для открытия/закрытия мобильного меню
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // Состояние 📊 для открытой категории (аккордеона) внутри мобильного меню
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
+
+  // Структура данных 🗂️ для удобного рендера
+  const navItems = [
+    {
+      title: "Персонажи",
+      links: [
+        { href: "/heros", label: "Heroes", hoverClass: "hover:text-cyan-400" },
+        { href: "/enemys", label: "Enemies", hoverClass: "hover:text-rose-500" }
+      ]
+    },
+    {
+      title: "Снаряжение",
+      links: [
+        { href: "/weapons", label: "Weapons", hoverClass: "hover:text-amber-400" },
+        { href: "/armors", label: "Armors", hoverClass: "hover:text-indigo-400" },
+        { href: "/artifact", label: "Artifacts", hoverClass: "hover:text-purple-400" },
+        { href: "/bags", label: "Bags", hoverClass: "hover:text-yellow-400" }
+      ]
+    },
+    {
+      title: "Припасы",
+      links: [
+        { href: "/consumables", label: "Consumables", hoverClass: "hover:text-emerald-400" },
+        { href: "/money", label: "Money", hoverClass: "hover:text-yellow-500" }
+      ]
+    },
+    {
+      title: "Справочник",
+      links: [
+        { href: "/rules", label: "Rules", hoverClass: "hover:text-emerald-400" },
+        { href: "/drop", label: "Drop", hoverClass: "hover:text-yellow-400" }
+      ]
+    }
+  ];
+
+  // Хэндлер для закрытия всего меню при переходе 🚪
+  const handleLinkClick = () => {
+    setIsMobileMenuOpen(false);
+    setOpenCategory(null); // Сбрасываем аккордеон, чтобы при следующем открытии всё было закрыто
+  };
+
   return (
-    <div className="w-full h-16 bg-[#182342] flex justify-center gap-12 items-center px-6 shadow-xl border-b border-slate-700/50 backdrop-blur-sm relative z-50">
-      
-      {/* Категория: Персонажи */}
-      <div className="relative group h-full flex items-center">
-        <span className="text-xl font-semibold text-slate-200 cursor-pointer hover:text-white transition-colors duration-300">
-          Персонажи
-        </span>
-        <div className="absolute left-1/2 -translate-x-1/2 top-full w-48 bg-[#182342] border border-slate-700/50 rounded-b-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden">
-          <Link href="/heros" className="px-5 py-3 text-slate-200 hover:text-cyan-400 hover:bg-slate-800/50 transition-colors">
-            Heroes
-          </Link>
-          <Link href="/enemys" className="px-5 py-3 text-slate-200 hover:text-rose-500 hover:bg-slate-800/50 transition-colors">
-            Enemies
-          </Link>
+    <div className="w-full bg-[#182342] shadow-xl border-b border-slate-700/50 backdrop-blur-sm relative z-50">
+      {/* Главная панель 🎛️ */}
+      <div className="h-16 px-6 flex justify-between md:justify-center items-center md:gap-12 w-full max-w-7xl mx-auto">
+        
+        {/* Заголовок для мобилок 📱 */}
+        <div className="md:hidden text-xl font-bold text-slate-200">
+          Меню
+        </div>
+
+        {/* Кнопка-бургер 🍔 */}
+        <button 
+          className="md:hidden text-slate-200 hover:text-white transition-colors p-2"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {isMobileMenuOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
+
+        {/* Десктопное меню 🖥️ */}
+        <div className="hidden md:flex h-full items-center gap-12">
+          {navItems.map((category) => (
+            <div key={category.title} className="relative group h-full flex items-center">
+              <span className="text-xl font-semibold text-slate-200 cursor-pointer hover:text-white transition-colors duration-300">
+                {category.title}
+              </span>
+              <div className="absolute left-1/2 -translate-x-1/2 top-full w-48 bg-[#182342] border border-slate-700/50 rounded-b-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden">
+                {category.links.map((link) => (
+                  <Link 
+                    key={link.href} 
+                    href={link.href} 
+                    className={`px-5 py-3 text-slate-200 hover:bg-slate-800/50 transition-colors ${link.hoverClass}`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Категория: Снаряжение */}
-      <div className="relative group h-full flex items-center">
-        <span className="text-xl font-semibold text-slate-200 cursor-pointer hover:text-white transition-colors duration-300">
-          Снаряжение
-        </span>
-        <div className="absolute left-1/2 -translate-x-1/2 top-full w-48 bg-[#182342] border border-slate-700/50 rounded-b-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden">
-          <Link href="/weapons" className="px-5 py-3 text-slate-200 hover:text-amber-400 hover:bg-slate-800/50 transition-colors">
-            Weapons
-          </Link>
-          <Link href="/armors" className="px-5 py-3 text-slate-200 hover:text-indigo-400 hover:bg-slate-800/50 transition-colors">
-            Armors
-          </Link>
-          <Link href="/artifact" className="px-5 py-3 text-slate-200 hover:text-purple-400 hover:bg-slate-800/50 transition-colors">
-            Artifacts
-          </Link>
-          <Link href="/bags" className="px-5 py-3 text-slate-200 hover:text-yellow-400 hover:bg-slate-800/50 transition-colors">
-            Bags
-          </Link>
+      {/* Выпадающее мобильное меню 📱 */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-[#182342] border-t border-slate-700/50 flex flex-col px-4 py-2 max-h-[80vh] overflow-y-auto">
+          {navItems.map((category) => (
+            <div key={category.title} className="flex flex-col border-b border-slate-700/50 last:border-0">
+              <button 
+                onClick={() => setOpenCategory(openCategory === category.title ? null : category.title)}
+                className="flex justify-between items-center py-4 text-lg font-semibold text-slate-200 hover:text-white transition-colors w-full text-left"
+              >
+                {category.title}
+                <span className={`text-sm transition-transform duration-300 ${openCategory === category.title ? 'rotate-180' : ''}`}>
+                  ▼
+                </span>
+              </button>
+              
+              {/* Ссылки внутри мобильной категории 🔗 */}
+              {openCategory === category.title && (
+                <div className="flex flex-col bg-slate-800/30 rounded-lg mb-2 overflow-hidden animate-fadeIn">
+                  {category.links.map((link) => (
+                    <Link 
+                      key={link.href} 
+                      href={link.href} 
+                      onClick={handleLinkClick}
+                      className={`px-6 py-3 text-slate-300 hover:bg-slate-700/50 transition-colors border-b border-slate-700/30 last:border-0 ${link.hoverClass}`}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-      </div>
-
-      {/* Категория: Припасы */}
-      <div className="relative group h-full flex items-center">
-        <span className="text-xl font-semibold text-slate-200 cursor-pointer hover:text-white transition-colors duration-300">
-          Припасы
-        </span>
-        <div className="absolute left-1/2 -translate-x-1/2 top-full w-48 bg-[#182342] border border-slate-700/50 rounded-b-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden">
-          <Link href="/consumables" className="px-5 py-3 text-slate-200 hover:text-emerald-400 hover:bg-slate-800/50 transition-colors">
-            Consumables
-          </Link>
-          <Link href="/money" className="px-5 py-3 text-slate-200 hover:text-yellow-500 hover:bg-slate-800/50 transition-colors">
-            Money
-          </Link>
-        </div>
-      </div>
-
-      {/* Категория: Справочник */}
-      <div className="relative group h-full flex items-center">
-        <span className="text-xl font-semibold text-slate-200 cursor-pointer hover:text-white transition-colors duration-300">
-          Справочник
-        </span>
-        <div className="absolute left-1/2 -translate-x-1/2 top-full w-48 bg-[#182342] border border-slate-700/50 rounded-b-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden">
-          <Link href="/rules" className="px-5 py-3 text-slate-200 hover:text-emerald-400 hover:bg-slate-800/50 transition-colors">
-            Rules
-          </Link>
-          <Link href="/drop" className="px-5 py-3 text-slate-200 hover:text-yellow-400 hover:bg-slate-800/50 transition-colors">
-            Drop
-          </Link>
-        </div>
-      </div>
-
+      )}
     </div>
-  )
+  );
 }
