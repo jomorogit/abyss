@@ -3,11 +3,11 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// 🎯 Берем базовый тип героя из findMany и расширяем его массивом скиллов
+// 🎯 Выводим базовые типы сущностей напрямую из методов Prisma (без импорта капризного Prisma)
 type BaseHero = Awaited<ReturnType<typeof prisma.hero.findMany>>[number];
 type SkillItem = Awaited<ReturnType<typeof prisma.heroSkill.findMany>>[number];
 
-// Склеиваем их вместе — этот тип TypeScript проглотит без лишних вопросов!
+// Склеиваем их вместе, чтобы TypeScript знал структуру вложенного массива skills
 type HeroWithSkills = BaseHero & {
   skills: SkillItem[];
 };
@@ -19,15 +19,15 @@ interface PageProps {
 export default async function HeroCardPage({ params }: PageProps) {
   const { id } = await params;
 
-  // Ищем героя + подтягиваем его скиллы 🗄️✨
+  // Ищем героя + подтягиваем его уникальные скиллы 🗄️✨
   const heroItem = await prisma.hero.findUnique({
     where: { id: id },
     include: {
-      skills: true,
+      skills: true, // Включаем связанные скиллы героя
     }
-  }) as HeroWithSkills | null; // Указываем, что на выходе может быть наш тип или null
+  }) as HeroWithSkills | null;
 
-  // Если герой не найден 🛑
+  // Если герой не найден в базе данных 🛑
   if (!heroItem) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
@@ -57,7 +57,7 @@ export default async function HeroCardPage({ params }: PageProps) {
 
         <div className="bg-gray-800 border border-gray-700 rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row">
           
-          {/* Левая часть: Изображение 🖼️ */}
+          {/* Левая часть: Изображение героя 🖼️ */}
           <div className="relative w-full lg:w-1/2 h-[400px] lg:h-[700px] bg-gray-950/50 p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-700">
             <div className="relative w-full h-full">
               {heroItem.image ? (
@@ -78,7 +78,7 @@ export default async function HeroCardPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Правая часть: Подробная информация 📝 */}
+          {/* Правая часть: Подробная информация и характеристики 📝 */}
           <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col">
             
             <h1 className="text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
@@ -115,13 +115,14 @@ export default async function HeroCardPage({ params }: PageProps) {
               <span className="text-2xl font-black text-indigo-400">+{heroItem.cubeBonus}</span>
             </div>
 
-            {/* Блок способностей (Skills) ✨ */}
+            {/* Блок уникальных способностей (Skills) ✨ */}
             <div className="mt-auto">
               <h3 className="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Уникальные способности ✨</h3>
               
               {heroItem.skills && heroItem.skills.length > 0 ? (
                 <div className="space-y-3">
-                  {heroItem.skills.map((skill) => (
+                  {/* 🛠️ Железобетонная инлайн-типизация skill: SkillItem для прохождения сборки */}
+                  {heroItem.skills.map((skill: SkillItem) => (
                     <div key={skill.id} className="bg-gray-900/80 p-4 rounded-xl border border-gray-700">
                       <div className="font-bold text-amber-400 text-lg">{skill.skillName}</div>
                       {skill.description && (
