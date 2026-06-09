@@ -1,4 +1,5 @@
-import { PrismaClient } from "@prisma/client"
+// 🎯 Импортируем напрямую из сгенерированной папки, минуя капризный кэш TS-окружения!
+import { PrismaClient } from "@prisma/client/index"
 import { Pool } from 'pg'
 import { PrismaPg } from '@prisma/adapter-pg'
 
@@ -8,14 +9,13 @@ const prismaClientSingleton = () => {
   return new PrismaClient({ adapter })
 }
 
-// 🎯 Правильное расширение глобального пространства типов для globalThis
+// 🎯 Расширяем глобальный объект без конфликтов типов
 declare global {
-  // Использование var внутри global позволяет TS автоматически подмешать свойство в globalThis
+  // eslint-disable-next-line no-var
   var prisma: ReturnType<typeof prismaClientSingleton> | undefined;
 }
 
 // Защищаем от создания дубликатов подключений при Fast Refresh в Next.js
-// Теперь globalThis.prisma валидна сама по себе, без всяких "as any"!
 export const prisma = globalThis.prisma ?? prismaClientSingleton()
 
 if (process.env.NODE_ENV !== 'production') {
