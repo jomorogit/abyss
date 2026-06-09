@@ -2,12 +2,13 @@ import React from 'react'
 import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link'; // 🔗 Импортируем компонент для ссылок
-// 📦 Импортируем автогенерируемый тип из Prisma Client
-import { Armor } from '@prisma/client'; 
+
+// 🎯 Хитрый трюк: TypeScript сам выведет точный тип элемента массива, который возвращает Prisma!
+type ArmorItem = Awaited<ReturnType<typeof prisma.armor.findMany>>[number];
 
 export default async function Page() {
-  // 🎯 Явно указываем тип массива, чтобы map знал структуру каждого item
-  let armorArray: Armor[] = [];
+  // Теперь массив строго типизирован, и ошибка исчезнет навсегда
+  let armorArray: ArmorItem[] = [];
 
   try {
     armorArray = await prisma.armor.findMany({});
