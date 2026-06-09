@@ -1,6 +1,6 @@
 "use client"; // Обязательно добавляем, так как теперь используются состояния (useState)
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function TopBar() {
@@ -8,6 +8,10 @@ export default function TopBar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   // Состояние 📊 для открытой категории (аккордеона) внутри мобильного меню
   const [openCategory, setOpenCategory] = useState<string | null>(null);
+
+  // Новые состояния для управления видимостью шапки 👀
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   // Структура данных 🗂️ для удобного рендера
   const navItems = [
@@ -43,6 +47,29 @@ export default function TopBar() {
     }
   ];
 
+  // Хук для отслеживания скролла 🖱️
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Если скроллим вниз и пролистали больше 50px (чтобы не дергалось на самом верху)
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setIsVisible(false);
+        setIsMobileMenuOpen(false); // Автоматически закрываем моб. меню при скрытии шапки
+      } else {
+        // Если скроллим вверх
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Очистка слушателя при размонтировании компонента 🧹
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   // Хэндлер для закрытия всего меню при переходе 🚪
   const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
@@ -50,7 +77,11 @@ export default function TopBar() {
   };
 
   return (
-    <div className="w-full bg-[#182342] shadow-xl border-b border-slate-700/50 backdrop-blur-sm relative z-50">
+    <div 
+      className={`fixed top-0 left-0 w-full bg-[#182342] shadow-xl border-b border-slate-700/50 backdrop-blur-sm z-50 transition-transform duration-300 ease-in-out ${
+        isVisible ? 'translate-y-0' : '-translate-y-full'
+      }`}
+    >
       {/* Главная панель 🎛️ */}
       <div className="h-16 px-6 flex justify-between md:justify-center items-center md:gap-12 w-full max-w-7xl mx-auto">
         
