@@ -3,8 +3,12 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
+// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma для валюты
+type MoneyItem = Awaited<ReturnType<typeof prisma.money.findMany>>[number];
+
 export default async function MoneyPage() {
-  let moneyArray = [];
+  // 📦 Явно типизируем массив, чтобы map знал структуру каждого объекта ценности
+  let moneyArray: MoneyItem[] = [];
 
   try {
     moneyArray = await prisma.money.findMany({});
@@ -12,20 +16,20 @@ export default async function MoneyPage() {
     console.error("Ошибка при загрузке валюты:", error);
     return (
       <div className="p-4 text-red-500 font-medium">
-        Не удалось загрузить список валюты. Пожалуйста, попробуйте позже.
+        ❌ Не удалось загрузить список валюты. Пожалуйста, попробуйте позже.
       </div>
     );
   }
 
   if (!moneyArray || moneyArray.length === 0) {
-    return <div className="p-4 text-gray-500">Казна пуста. Валюты нет.</div>;
+    return <div className="p-4 text-gray-500">Казна пуста. Валюты нет. 🪙</div>;
   }
 
   return (
     <div className="p-6 sm:p-10 bg-gray-900 min-h-screen text-white">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-extrabold text-white mb-8 uppercase tracking-widest">
-          Валюта и Ценности
+          Валюта и Ценности 🪙
         </h1>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -37,11 +41,13 @@ export default async function MoneyPage() {
             >
               <div className="relative h-80 bg-gray-950 flex items-center justify-center overflow-hidden border-b border-gray-700 p-6">
                 
-                <div className="absolute top-4 left-4 z-30 pointer-events-none">
-                  <span className="bg-yellow-900/80 text-yellow-400 text-xs font-black px-3 py-1.5 rounded-md border border-yellow-900/50 shadow-sm uppercase tracking-wider">
-                    {item.type}
-                  </span>
-                </div>
+                {item.type && (
+                  <div className="absolute top-4 left-4 z-30 pointer-events-none">
+                    <span className="bg-yellow-900/80 text-yellow-400 text-xs font-black px-3 py-1.5 rounded-md border border-yellow-900/50 shadow-sm uppercase tracking-wider">
+                      {item.type}
+                    </span>
+                  </div>
+                )}
 
                 <span className="absolute top-4 right-4 z-30 bg-amber-500/90 text-gray-950 text-xl font-bold px-3 py-1.5 rounded-md shadow-sm">
                   Tier {item.tier}
@@ -59,7 +65,7 @@ export default async function MoneyPage() {
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full text-gray-700 text-sm uppercase tracking-widest font-bold">
-                      Нет изображения
+                      Нет изображения 🖼️
                     </div>
                   )}
                 </div>

@@ -3,8 +3,12 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
+// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma для сумок
+type BagItem = Awaited<ReturnType<typeof prisma.bags.findMany>>[number];
+
 export default async function BagsPage() {
-  let bagsArray = [];
+  // 📦 Строго типизируем массив, чтобы map знал все свойства объекта
+  let bagsArray: BagItem[] = [];
 
   try {
     bagsArray = await prisma.bags.findMany({});
@@ -12,7 +16,7 @@ export default async function BagsPage() {
     console.error("Ошибка при загрузке сумок:", error);
     return (
       <div className="p-4 text-red-500 font-medium">
-        Не удалось загрузить список сумок. Пожалуйста, попробуйте позже.
+        ❌ Не удалось загрузить список сумок. Пожалуйста, попробуйте позже.
       </div>
     );
   }
@@ -48,11 +52,13 @@ export default async function BagsPage() {
                 </div>
               )}
               
-              <span className="absolute top-3 left-3 z-10 bg-gray-900/80 text-blue-400 text-xs font-bold px-2.5 py-1 rounded-md border border-blue-900/50 shadow-sm uppercase tracking-wider">
-                {bag.type}
-              </span>
+              {bag.type && (
+                <span className="absolute top-3 left-3 z-10 bg-gray-900/80 text-blue-400 text-xs font-bold px-2.5 py-1 rounded-md border border-blue-900/50 shadow-sm uppercase tracking-wider">
+                  {bag.type}
+                </span>
+              )}
 
-               <span className="absolute top-3 right-3 z-10 bg-amber-500/90 text-gray-950 text-xl font-bold px-2.5 py-1 rounded-md shadow-sm">
+              <span className="absolute top-3 right-3 z-10 bg-amber-500/90 text-gray-950 text-xl font-bold px-2.5 py-1 rounded-md shadow-sm">
                 Tier {bag.tier}
               </span>
             </div>
@@ -75,13 +81,13 @@ export default async function BagsPage() {
 
               <div className="flex flex-col gap-2 border-t border-gray-700 pt-3 mt-auto">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500 text-sm uppercase tracking-widest font-bold">Покупка</span>
+                  <span className="text-gray-400 text-sm uppercase tracking-widest font-bold">Покупка</span>
                   <span className="text-lg font-extrabold text-green-400 drop-shadow-sm">
                     {bag.price_buy === 0 ? 'Нельзя купить' : bag.price_buy + ' Silver'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500 text-sm uppercase tracking-widest font-bold">Продажа</span>
+                  <span className="text-gray-400 text-sm uppercase tracking-widest font-bold">Продажа</span>
                   <span className="text-lg font-extrabold text-amber-500 drop-shadow-sm">
                     {bag.price_sell + ' Silver'}
                   </span>

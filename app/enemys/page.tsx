@@ -3,8 +3,12 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
+// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma для врагов
+type EnemyItem = Awaited<ReturnType<typeof prisma.enemy.findMany>>[number];
+
 export default async function EnemysPage() {
-  let enemiesArray = [];
+  // 📦 Явно типизируем массив, чтобы map знал структуру каждого монстра
+  let enemiesArray: EnemyItem[] = [];
 
   try {
     // Получаем врагов из базы 🗄️

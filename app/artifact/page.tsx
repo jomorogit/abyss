@@ -3,8 +3,12 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
+// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma
+type ArtifactItem = Awaited<ReturnType<typeof prisma.artifact.findMany>>[number];
+
 export default async function ArtifactsPage() {
-  let artifactsArray = [];
+  // 📦 Явно указываем массив объектов нашего выведенного типа
+  let artifactsArray: ArtifactItem[] = [];
 
   try {
     // Получаем артефакты из базы
@@ -13,7 +17,7 @@ export default async function ArtifactsPage() {
     console.error("Ошибка при загрузке артефактов:", error);
     return (
       <div className="p-4 text-red-500 font-medium">
-        Не удалось открыть сокровищницу. Пожалуйста, попробуйте позже.
+        ❌ Не удалось открыть сокровищницу. Пожалуйста, попробуйте позже.
       </div>
     );
   }
@@ -56,9 +60,11 @@ export default async function ArtifactsPage() {
               )}
               
               {/* Тип артефакта */}
-              <span className="absolute top-3 left-3 z-20 bg-gray-900/80 text-purple-400 text-xs font-bold px-2.5 py-1 rounded-md border border-purple-900/50 shadow-sm uppercase tracking-wider">
-                 {artifact.type}
-              </span>
+              {artifact.type && (
+                <span className="absolute top-3 left-3 z-20 bg-gray-900/80 text-purple-400 text-xs font-bold px-2.5 py-1 rounded-md border border-purple-900/50 shadow-sm uppercase tracking-wider">
+                   {artifact.type}
+                </span>
+              )}
 
               {/* Тир артефакта */}
               <span className="absolute top-3 right-3 z-20 bg-fuchsia-600/90 text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-sm">

@@ -3,8 +3,12 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
+// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma для героев
+type HeroItem = Awaited<ReturnType<typeof prisma.hero.findMany>>[number];
+
 export default async function HeroesPage() {
-  let heroesArray = [];
+  // 📦 Строго типизируем массив, чтобы избежать ошибки неявного типа any
+  let heroesArray: HeroItem[] = [];
 
   try {
     // Получаем героев из базы 🗄️

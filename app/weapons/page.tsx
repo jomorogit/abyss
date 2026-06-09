@@ -3,8 +3,12 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
+// 🎯 Автоматически выводим точный тип элемента массива, который возвращает Prisma для оружия
+type WeaponItem = Awaited<ReturnType<typeof prisma.weapon.findMany>>[number];
+
 export default async function WeaponsPage() {
-  let weaponsArray = [];
+  // 📦 Строго типизируем массив, чтобы внутри map работал автокомплит и не было ошибок сборки
+  let weaponsArray: WeaponItem[] = [];
 
   try {
     // Получаем список оружия из базы
@@ -13,18 +17,18 @@ export default async function WeaponsPage() {
     console.error("Ошибка при загрузке оружия:", error);
     return (
       <div className="p-4 text-red-500 font-medium">
-        Не удалось открыть оружейную. Пожалуйста, попробуйте позже.
+        ❌ Не удалось открыть оружейную. Пожалуйста, попробуйте позже.
       </div>
     );
   }
 
   if (!weaponsArray || weaponsArray.length === 0) {
-    return <div className="p-4 text-gray-500">Оружейная пуста. Стеллажи покрылись пылью.</div>;
+    return <div className="p-4 text-gray-500">Оружейная пуста. Стеллажи покрылись пылью. 🕸️</div>;
   }
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen">
-      <h1 className="text-2xl font-bold text-white mb-6">Оружейная</h1>
+      <h1 className="text-2xl font-bold text-white mb-6">Оружейная ⚔️</h1>
       
       {/* Сетка для карточек */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -47,16 +51,11 @@ export default async function WeaponsPage() {
                 />
               ) : (
                 <div className="text-gray-600 text-sm uppercase tracking-wider">
-                  Нет чертежа
+                  Нет чертежа 📜
                 </div>
               )}
-              
-              {/* Тип оружия (Sword, Staff, Dagger)
-              <span className="absolute top-3 left-3 z-10 bg-gray-900/80 text-orange-400 text-xs font-bold px-2.5 py-1 rounded-md border border-orange-900/50 shadow-sm uppercase tracking-wider">
-                {weapon.type}
-              </span> */}
 
-               <span className="absolute top-3 right-3 z-10 bg-amber-500/90 text-gray-950 text-xl font-bold px-2.5 py-1 rounded-md shadow-sm">
+              <span className="absolute top-3 right-3 z-10 bg-amber-500/90 text-gray-950 text-xl font-bold px-2.5 py-1 rounded-md shadow-sm">
                 Tier {weapon.tier}
               </span>
             </div>
@@ -68,7 +67,7 @@ export default async function WeaponsPage() {
               </h2>
               
               <p className="text-gray-400 text-[16px] mb-4 line-clamp-3 flex-grow">
-                {weapon.description || 'Клинок без истории...'}
+                {weapon.description || 'Клинок без истории... 📜'}
               </p>
 
               {/* Характеристики оружия */}

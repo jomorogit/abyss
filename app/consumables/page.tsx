@@ -3,8 +3,12 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
+// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma для расходников
+type ConsumableItem = Awaited<ReturnType<typeof prisma.consumables.findMany>>[number];
+
 export default async function ConsumablesPage() {
-  let consumablesArray = [];
+  // 📦 Строго типизируем массив, чтобы TypeScript знал структуру полей объекта в цикле map
+  let consumablesArray: ConsumableItem[] = [];
 
   try {
     consumablesArray = await prisma.consumables.findMany({});
@@ -37,11 +41,13 @@ export default async function ConsumablesPage() {
             >
               <div className="relative h-80 bg-gray-950 flex items-center justify-center overflow-hidden border-b border-gray-700 p-6">
                 
-                <div className="absolute top-4 left-4 z-30 pointer-events-none">
-                  <span className="bg-emerald-900/80 text-emerald-400 text-xs font-black px-3 py-1.5 rounded-md border border-emerald-900/50 shadow-sm uppercase tracking-wider">
-                    {item.type}
-                  </span>
-                </div>
+                {item.type && (
+                  <div className="absolute top-4 left-4 z-30 pointer-events-none">
+                    <span className="bg-emerald-900/80 text-emerald-400 text-xs font-black px-3 py-1.5 rounded-md border border-emerald-900/50 shadow-sm uppercase tracking-wider">
+                      {item.type}
+                    </span>
+                  </div>
+                )}
 
                 <span className="absolute top-4 right-4 z-30 bg-amber-500/90 text-gray-950 text-xl font-bold px-3 py-1.5 rounded-md shadow-sm">
                   Tier {item.tier}
