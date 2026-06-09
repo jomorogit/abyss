@@ -1,0 +1,174 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================================
+// ENEMY (Враги)
+// ==========================================
+model Enemy {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  image       String?  // Путь к изображению карты врага
+  tier        Int      @default(1)
+  hp          Int
+  attack      Int
+  armor       Int
+  skill       String?  // Описание способности
+  cubeBonus   Int      @default(0)
+  
+  // Связь с таблицей Loot
+  lootId      String?
+  loot        Loot?    @relation(fields: [lootId], references: [id], onDelete: SetNull)
+  lootChance  Float    @default(0.0) // Шанс выпадения лута (от 0.0 до 1.0)
+
+  @@map("enemy")
+}
+
+// ==========================================
+// LOOT (Таблицы добычи / Категории лута)
+// ==========================================
+model Loot {
+  id      String  @id @default(uuid())
+  type    String  // Например: "Gold", "Materials", "Equipment"
+  tier    Int     @default(1)
+  enemies Enemy[] // Обратная связь для Prisma
+
+  @@map("loot")
+}
+
+// ==========================================
+// HERO (Герои)
+// ==========================================
+model Hero {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  image       String?
+  hp          Int
+  mana        Int
+  attack      Int
+  armor       Int
+  cubeBonus   Int         @default(0)
+  
+  // Связь один ко многим с HeroSkills
+  skills      HeroSkill[]
+
+  @@map("hero")
+}
+
+// ==========================================
+// HERO SKILLS (Способности героев)
+// ==========================================
+model HeroSkill {
+  id          String  @id @default(uuid())
+  skillName   String
+  description String?
+  image       String?
+  
+  // Внешний ключ для связи с Героем
+  heroId      String
+  hero        Hero    @relation(fields: [heroId], references: [id], onDelete: Cascade)
+
+  @@map("hero_skill")
+}
+
+// ==========================================
+// WEAPON (Оружие)
+// ==========================================
+model Weapon {
+  id           String  @id @default(uuid())
+  name         String
+  description  String?
+  image        String?
+  type         String  // Например: "Sword", "Staff", "Dagger"
+  damage       Int
+  skillActive  String? // Активный скилл оружия
+  skillPassive String? // Пассивный скилл оружия
+  isDroppable  Boolean @default(false)
+  price_buy        Float   @default(0.0) 
+  price_sell        Float   @default(0.0)
+  tier    Int     @default(1)
+  @@map("weapon")
+}
+
+// ==========================================
+// ARMOR (Броня)
+// ==========================================
+model Armor {
+  id           String  @id @default(uuid())
+  name         String
+  description  String?
+  image        String?
+  type         String?  // Например: "Heavy", "Light", "Cloth"
+  tier         String
+  damageBlock  Int     // Показатель блокирования урона
+  isDroppable  Boolean @default(false)
+  skillPassive String?
+  price_buy        Float   @default(0.0) 
+  price_sell        Float   @default(0.0)
+
+  @@map("armor")
+}
+
+// ==========================================
+// ARTIFACT (Артефакты)
+// ==========================================
+model Artifact {
+  id           String  @id @default(uuid())
+  name         String
+  description  String?
+  image        String?
+  type         String  // Например: "Ring", "Amulet"
+  skillPassive String?
+  skillActive  String?
+  isDroppable  Boolean @default(false)
+  price_buy        Float   @default(0.0) 
+  price_sell        Float   @default(0.0)
+  tier    Int     @default(1)
+
+  @@map("artifact")
+}
+
+// ==========================================
+// BAGS (Сумки / Рюкзаки)
+// ==========================================
+model Bags {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  image       String?
+  type        String  // Например: "Leather", "Magic Bag"
+  slots       Int     // Количество слотов под карты/предметы
+  price_buy        Float   @default(0.0) 
+  price_sell        Float   @default(0.0)
+  tier    Int     @default(1)
+  @@map("bags")
+}
+
+model Consumables {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  image       String?
+  type        String
+  price_buy        Float   @default(0.0) 
+  price_sell        Float   @default(0.0)
+  tier    Int     @default(1)
+  @@map("consumables")
+}
+
+model Money {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  image       String?
+  type        String
+  value       Int 
+  tier    Int     @default(1)
+  @@map("money")
+}
