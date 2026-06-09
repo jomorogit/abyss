@@ -3,14 +3,14 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// 🎯 Выводим точный тип героя со всеми вложенными релейшнами напрямую из запроса базы!
-type HeroWithSkills = Awaited<
-  ReturnType<
-    typeof prisma.hero.findUnique<{
-      include: { skills: true };
-    }>
-  >
->;
+// 🎯 Берем базовый тип героя из findMany и расширяем его массивом скиллов
+type BaseHero = Awaited<ReturnType<typeof prisma.hero.findMany>>[number];
+type SkillItem = Awaited<ReturnType<typeof prisma.heroSkill.findMany>>[number];
+
+// Склеиваем их вместе — этот тип TypeScript проглотит без лишних вопросов!
+type HeroWithSkills = BaseHero & {
+  skills: SkillItem[];
+};
 
 interface PageProps {
   params: Promise<{ id: string }>; 
@@ -23,9 +23,9 @@ export default async function HeroCardPage({ params }: PageProps) {
   const heroItem = await prisma.hero.findUnique({
     where: { id: id },
     include: {
-      skills: true, // Включаем связанные скиллы героя
+      skills: true,
     }
-  }) as HeroWithSkills; // Приводим к нашему выведенному типу
+  }) as HeroWithSkills | null; // Указываем, что на выходе может быть наш тип или null
 
   // Если герой не найден 🛑
   if (!heroItem) {
