@@ -2,6 +2,13 @@ import React from 'react';
 import { prisma } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
+// 📦 Импортируем типы Prisma для точного описания вложенных связей
+import { Prisma } from '@prisma/client';
+
+// 🎯 Выводим тип героя, автоматически включающий в себя массив skills
+type HeroWithSkills = Prisma.HeroGetPayload<{
+  include: { skills: true }
+}>;
 
 interface PageProps {
   params: Promise<{ id: string }>; 
@@ -11,12 +18,13 @@ export default async function HeroCardPage({ params }: PageProps) {
   const { id } = await params;
 
   // Ищем героя + подтягиваем его скиллы 🗄️✨
+  // Принудительно приводим к типу HeroWithSkills | null, чтобы намертво зафиксировать схему данных
   const heroItem = await prisma.hero.findUnique({
     where: { id: id },
     include: {
       skills: true, // Включаем связанные скиллы героя
     }
-  });
+  }) as HeroWithSkills | null;
 
   // Если герой не найден 🛑
   if (!heroItem) {
