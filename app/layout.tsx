@@ -21,6 +21,30 @@ export const metadata: Metadata = {
     icon: "./icon/icon.ico",    
     apple: "./icon/icon.ico",
   },
+
+  // Добавлены только эти блоки для красивого отображения ссылки в Telegram 🏷️
+  openGraph: {
+    title: "The abyss game",
+    description: "Интерактивный помощник для настольной игры",
+    url: "https://abyss-sage-iota.vercel.app", // Ссылка на ваш сайт
+    siteName: "The abyss game",
+    type: "website",
+    images: [
+      {
+        url: "./icon/icon.ico", // Используем ту же иконку для превью ссылки
+        width: 512,
+        height: 512,
+        alt: "The abyss game logo",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary",
+    title: "The abyss game",
+    description: "Интерактивный помощник для настольной игры",
+    images: ["./icon/icon.ico"],
+  },
 };
 
 export default function RootLayout({
