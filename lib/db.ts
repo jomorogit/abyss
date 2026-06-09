@@ -8,11 +8,16 @@ const prismaClientSingleton = () => {
   return new PrismaClient({ adapter })
 }
 
+// 🎯 Правильное расширение глобального пространства типов для globalThis
 declare global {
-  var prisma: undefined | ReturnType<typeof prismaClientSingleton>
+  // Использование var внутри global позволяет TS автоматически подмешать свойство в globalThis
+  var prisma: ReturnType<typeof prismaClientSingleton> | undefined;
 }
 
+// Защищаем от создания дубликатов подключений при Fast Refresh в Next.js
+// Теперь globalThis.prisma валидна сама по себе, без всяких "as any"!
 export const prisma = globalThis.prisma ?? prismaClientSingleton()
+
 if (process.env.NODE_ENV !== 'production') {
   globalThis.prisma = prisma
 }
