@@ -128,20 +128,20 @@ export default async function EnemyCardPage({ params }: PageProps) {
 
             {/* Блок Лута 💰 */}
             <div className="mt-auto border-t border-red-900/30 pt-6">
-              <h3 className="text-xl font-bold text-white mb-4">📦 Возможная добыча</h3>
+              <h3 className="text-xl font-bold text-white mb-4"> Возможная добыча</h3>
               <div className="flex items-center justify-between bg-gray-900 p-4 rounded-xl border border-gray-700">
                 <div>
-                  <div className="text-gray-400 text-sm">Тип добычи:</div>
+                  <div className="text-gray-400 text-sm">Тир добычи:</div>
                   <div className="font-bold text-amber-400 text-lg">
-                    {enemyItem.loot ? enemyItem.loot.type : 'Нет ценностей'}
+                    {enemyItem.tier ? enemyItem.tier + " Тир": 'Нет ценностей'}
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-gray-400 text-sm">Шанс выпадения:</div>
-                  <div className={`font-black text-2xl ${lootChancePercent > 50 ? 'text-green-500' : 'text-amber-500'}`}>
-                    {lootChancePercent}%
-                  </div>
+               <div className="text-right">
+                <div className="text-gray-400 text-sm">Шанс выпадения (кубик):</div>
+                <div className="font-black text-2xl text-amber-500">
+                  🎲 1-{enemyItem.lootChance ? Math.round(enemyItem.lootChance) : 0}
                 </div>
+              </div>
               </div>
             </div>
 

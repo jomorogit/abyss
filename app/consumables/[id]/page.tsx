@@ -37,7 +37,7 @@ export default async function ConsumableCardPage({ params }: PageProps) {
           href="/consumables" 
           className="inline-flex items-center text-gray-400 hover:text-emerald-500 mb-8 transition-colors font-medium"
         >
-          <span className="mr-2 text-xl">←</span> Назад к списку 📋
+          <span className="mr-2 text-xl">←</span> Назад к списку
         </Link>
 
         <div className="bg-gray-800 border border-gray-700 rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row relative">
@@ -46,10 +46,10 @@ export default async function ConsumableCardPage({ params }: PageProps) {
             
             <div className="absolute top-6 left-6 z-10 flex flex-col gap-3">
               <span className="bg-emerald-950/80 text-emerald-400 text-sm font-black px-4 py-2 rounded-lg backdrop-blur-md border border-emerald-900/50 shadow-lg uppercase tracking-widest">
-                🧪 {item.type}
+                 {item.type}
               </span>
                <span className="bg-amber-500/90 text-gray-950 text-sm font-black px-4 py-2 rounded-lg backdrop-blur-md shadow-lg">
-                ⭐ Tier {item.tier}
+                 Tier {item.tier}
               </span>
             </div>
 
@@ -83,15 +83,15 @@ export default async function ConsumableCardPage({ params }: PageProps) {
 
             <div className="pt-8 border-t border-gray-700 flex flex-row gap-8 mt-auto">
               <div>
-                <div className="text-gray-500 text-sm font-bold mb-1 uppercase tracking-widest">Покупка 🛒</div>
+                <div className="text-gray-500 text-sm font-bold mb-1 uppercase tracking-widest">Покупка</div>
                 <div className="text-3xl lg:text-4xl font-black text-green-400 drop-shadow-md">
-                  {item.price_buy === 0 ? "Нельзя купить 🚫" : item.price_buy + " €"}
+                  {item.price_buy === 0 ? "Нельзя купить" : item.price_buy + " Silver"}
                 </div>
               </div>
               <div>
-                <div className="text-gray-500 text-sm font-bold mb-1 uppercase tracking-widest">Продажа 💰</div>
+                <div className="text-gray-500 text-sm font-bold mb-1 uppercase tracking-widest">Продажа</div>
                 <div className="text-3xl lg:text-4xl font-black text-amber-500 drop-shadow-md">
-                  {item.price_sell + " €"}
+                  {item.price_sell + " Silver"}
                 </div>
               </div>
             </div>

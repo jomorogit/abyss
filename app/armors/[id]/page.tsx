@@ -56,7 +56,7 @@ export default async function ArmorCardPage({ params }: PageProps) {
             <div className="absolute top-6 left-6 flex flex-col gap-3 z-10">
               {armorItem.type && (
                 <span className="bg-gray-800/90 text-gray-300 text-sm font-bold px-4 py-2 rounded-lg backdrop-blur-md border border-gray-600 shadow-lg">
-                  📦 Тип: {armorItem.type}
+                  Тип: {armorItem.type}
                 </span>
               )}
               <span className="bg-amber-500/90 text-gray-900 text-xl font-black px-4 py-2 rounded-lg backdrop-blur-md shadow-lg">

@@ -29,7 +29,7 @@ export default async function ConsumablesPage() {
     <div className="p-6 sm:p-10 bg-gray-900 min-h-screen text-white">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-extrabold text-white mb-8 uppercase tracking-widest">
-          Расходные материалы 🧪
+          Расходные материалы
         </h1>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -82,15 +82,15 @@ export default async function ConsumablesPage() {
 
                 <div className="flex flex-col gap-3 mt-auto pt-4 border-t border-gray-700/50">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500 uppercase tracking-wider font-bold">Покупка 🛒:</span>
+                    <span className="text-sm text-gray-500 uppercase tracking-wider font-bold">Покупка:</span>
                     <span className="text-base font-black text-green-400">
-                      {item.price_buy === 0 ? 'Нельзя купить 🚫' : item.price_buy + ' €'}
+                      {item.price_buy === 0 ? 'Нельзя купить 🚫' : item.price_buy + ' Silver'}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500 uppercase tracking-wider font-bold">Продажа 💰:</span>
+                    <span className="text-sm text-gray-500 uppercase tracking-wider font-bold">Продажа:</span>
                     <span className="text-base font-black text-amber-500">
-                      {item.price_sell} €
+                      {item.price_sell} Silver
                     </span>
                   </div>
                 </div>

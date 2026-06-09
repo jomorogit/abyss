@@ -48,7 +48,7 @@ export default async function BagCardPage({ params }: PageProps) {
               <span className="bg-blue-950/80 text-blue-400 text-sm font-black px-4 py-2 rounded-lg backdrop-blur-md border border-blue-900/50 shadow-lg uppercase tracking-widest">
                 {bagItem.type}
               </span>
-               <span className="absolute top-10 left-0 z-10 bg-amber-500/90 text-gray-950 text-xl font-bold px-2.5 py-1 rounded-md shadow-sm">
+               <span className="absolute top-10 left-0 z-10 bg-amber-500/90 text-gray-950 text-xl font-bold px-2.5 w-20 py-1 rounded-md shadow-sm">
                 Tier {bagItem.tier}
               </span>
             </div>

@@ -101,7 +101,7 @@ export default async function DropPage() {
     <div className="p-6 sm:p-10 bg-gray-900 min-h-screen text-white">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-extrabold text-white mb-2 uppercase tracking-widest">
-          Возможная добыча ⚔️
+          Возможная добыча
         </h1>
         <p className="text-gray-400 mb-10 text-lg">
           Список всех предметов, которые можно получить после победы над противниками.
@@ -166,7 +166,7 @@ export default async function DropPage() {
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-gray-500 uppercase tracking-wider font-bold">Покупка:</span>
                         <span className="text-base font-black text-green-400">
-                          {item.price_buy === 0 && item.isDroppable ? 'Нельзя купить 🚫' : item.price_buy + ' Silver'}
+                          {item.price_buy === 0 && item.isDroppable ? 'Нельзя купить' : item.price_buy + ' Silver'}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">

@@ -33,7 +33,7 @@ export default async function HeroCardPage({ params }: PageProps) {
       <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
         <div className="text-center bg-gray-800 p-10 rounded-2xl border border-gray-700 shadow-2xl">
           <h1 className="text-6xl font-black text-gray-700 mb-4">404</h1>
-          <div className="text-2xl font-bold mb-2">🦸‍♂️ Герой не найден</div>
+          <div className="text-2xl font-bold mb-2">Герой не найден</div>
           <p className="text-gray-400 mb-6">Персонаж с ID {id} отсутствует в таверне.</p>
           <Link href="/heroes" className="text-blue-500 hover:text-blue-400 transition-colors underline underline-offset-4">
             Вернуться в зал героев
@@ -49,7 +49,7 @@ export default async function HeroCardPage({ params }: PageProps) {
         
         {/* Кнопка "Назад" 🔙 */}
         <Link 
-          href="/heroes" 
+          href="/heros" 
           className="inline-flex items-center text-gray-400 hover:text-blue-400 mb-8 transition-colors font-medium"
         >
           <span className="mr-2 text-xl">←</span> Вернуться к списку героев
@@ -110,14 +110,19 @@ export default async function HeroCardPage({ params }: PageProps) {
             </div>
 
             {/* Дополнительные параметры 🎲 */}
-            <div className="bg-indigo-900/20 p-5 rounded-2xl border border-indigo-500/30 mb-8 flex justify-between items-center">
+            {heroItem.cubeBonus === 0 ? (
+              <div></div>
+            ) : (
+               <div className="bg-indigo-900/20 p-5 rounded-2xl border border-indigo-500/30 mb-8 flex justify-between items-center">
               <span className="text-indigo-300 font-medium uppercase tracking-wider">🎲 Бонус броска кубика</span>
               <span className="text-2xl font-black text-indigo-400">+{heroItem.cubeBonus}</span>
             </div>
+            )}
+           
 
             {/* Блок уникальных способностей (Skills) ✨ */}
             <div className="mt-auto">
-              <h3 className="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Уникальные способности ✨</h3>
+              <h3 className="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Уникальные способности</h3>
               
               {heroItem.skills && heroItem.skills.length > 0 ? (
                 <div className="space-y-3">
