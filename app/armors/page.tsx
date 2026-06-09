@@ -2,9 +2,12 @@ import React from 'react'
 import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link'; // 🔗 Импортируем компонент для ссылок
+// 📦 Импортируем автогенерируемый тип из Prisma Client
+import { Armor } from '@prisma/client'; 
 
 export default async function Page() {
-  let armorArray = [];
+  // 🎯 Явно указываем тип массива, чтобы map знал структуру каждого item
+  let armorArray: Armor[] = [];
 
   try {
     armorArray = await prisma.armor.findMany({});
