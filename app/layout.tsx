@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TopBar from '@/componens/TopBar';
-// ↙️ Импортируем наш новый обёрточный компонент вместо прямого Provider
-import { ReduxProvider } from "./providers"; 
+
+// import { ReduxProvider } from "./providers"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Настраиваем метаданные здесь 🏰 (Они остаются на сервере, всё отлично!)
+
 export const metadata: Metadata = {
   title: "The abyss game",
   description: "Интерактивный помощник для настольной игры",
@@ -58,12 +58,12 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-gray-900 text-white flex flex-col pt-16"> 
        
-        <ReduxProvider>
+        {/* <ReduxProvider> */}
           <TopBar/>
           <main className="flex-1 flex flex-col">
             {children}
           </main>
-        </ReduxProvider>
+        {/* </ReduxProvider> */}
       </body>
     </html>
   );
