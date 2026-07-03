@@ -1,19 +1,18 @@
-"use client"; // Обязательно добавляем, так как теперь используются состояния (useState)
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function TopBar() {
-  // Состояние 📊 для открытия/закрытия мобильного меню
+ 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // Состояние 📊 для открытой категории (аккордеона) внутри мобильного меню
   const [openCategory, setOpenCategory] = useState<string | null>(null);
 
-  // Новые состояния для управления видимостью шапки 👀
+ 
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  // Структура данных 🗂️ для удобного рендера
+
   const navItems = [
     {
       title: "Персонажи",
@@ -47,15 +46,15 @@ export default function TopBar() {
     }
   ];
 
-  // Хук для отслеживания скролла 🖱️
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Если скроллим вниз и пролистали больше 50px (чтобы не дергалось на самом верху)
+   
       if (currentScrollY > lastScrollY && currentScrollY > 50) {
         setIsVisible(false);
-        setIsMobileMenuOpen(false); // Автоматически закрываем моб. меню при скрытии шапки
+        setIsMobileMenuOpen(false); 
       } else {
         // Если скроллим вверх
         setIsVisible(true);
@@ -66,14 +65,14 @@ export default function TopBar() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Очистка слушателя при размонтировании компонента 🧹
+ 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  // Хэндлер для закрытия всего меню при переходе 🚪
+ 
   const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
-    setOpenCategory(null); // Сбрасываем аккордеон, чтобы при следующем открытии всё было закрыто
+    setOpenCategory(null); 
   };
 
   return (
@@ -82,15 +81,15 @@ export default function TopBar() {
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      {/* Главная панель 🎛️ */}
+    
       <div className="h-16 px-6 flex justify-between md:justify-center items-center md:gap-12 w-full max-w-7xl mx-auto">
         
-        {/* Заголовок для мобилок 📱 */}
+      
         <div className="md:hidden text-xl font-bold text-slate-200">
           Меню
         </div>
 
-        {/* Кнопка-бургер 🍔 */}
+      
         <button 
           className="md:hidden text-slate-200 hover:text-white transition-colors p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -128,7 +127,7 @@ export default function TopBar() {
         </div>
       </div>
 
-      {/* Выпадающее мобильное меню 📱 */}
+     
       {isMobileMenuOpen && (
         <div className="md:hidden bg-[#182342] border-t border-slate-700/50 flex flex-col px-4 py-2 max-h-[80vh] overflow-y-auto">
           {navItems.map((category) => (
@@ -143,7 +142,7 @@ export default function TopBar() {
                 </span>
               </button>
               
-              {/* Ссылки внутри мобильной категории 🔗 */}
+            
               {openCategory === category.title && (
                 <div className="flex flex-col bg-slate-800/30 rounded-lg mb-2 overflow-hidden animate-fadeIn">
                   {category.links.map((link) => (
