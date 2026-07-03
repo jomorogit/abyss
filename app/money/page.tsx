@@ -3,11 +3,11 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
-// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma для валюты
+
 type MoneyItem = Awaited<ReturnType<typeof prisma.money.findMany>>[number];
 
 export default async function MoneyPage() {
-  // 📦 Явно типизируем массив, чтобы map знал структуру каждого объекта ценности
+ 
   let moneyArray: MoneyItem[] = [];
 
   try {

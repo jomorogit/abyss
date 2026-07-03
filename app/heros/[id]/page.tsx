@@ -3,11 +3,11 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// 🎯 Выводим базовые типы сущностей напрямую из методов Prisma (без импорта капризного Prisma)
+
 type BaseHero = Awaited<ReturnType<typeof prisma.hero.findMany>>[number];
 type SkillItem = Awaited<ReturnType<typeof prisma.heroSkill.findMany>>[number];
 
-// Склеиваем их вместе, чтобы TypeScript знал структуру вложенного массива skills
+
 type HeroWithSkills = BaseHero & {
   skills: SkillItem[];
 };
@@ -19,15 +19,15 @@ interface PageProps {
 export default async function HeroCardPage({ params }: PageProps) {
   const { id } = await params;
 
-  // Ищем героя + подтягиваем его уникальные скиллы 🗄️✨
+ 
   const heroItem = await prisma.hero.findUnique({
     where: { id: id },
     include: {
-      skills: true, // Включаем связанные скиллы героя
+      skills: true, 
     }
   }) as HeroWithSkills | null;
 
-  // Если герой не найден в базе данных 🛑
+ 
   if (!heroItem) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
@@ -47,7 +47,7 @@ export default async function HeroCardPage({ params }: PageProps) {
     <div className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 text-white">
       <div className="max-w-6xl mx-auto">
         
-        {/* Кнопка "Назад" 🔙 */}
+    
         <Link 
           href="/heros" 
           className="inline-flex items-center text-gray-400 hover:text-blue-400 mb-8 transition-colors font-medium"
@@ -57,7 +57,7 @@ export default async function HeroCardPage({ params }: PageProps) {
 
         <div className="bg-gray-800 border border-gray-700 rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row">
           
-          {/* Левая часть: Изображение героя 🖼️ */}
+       
           <div className="relative w-full lg:w-1/2 h-[400px] lg:h-[700px] bg-gray-950/50 p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-700">
             <div className="relative w-full h-full">
               {heroItem.image ? (
@@ -78,7 +78,7 @@ export default async function HeroCardPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Правая часть: Подробная информация и характеристики 📝 */}
+        
           <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col">
             
             <h1 className="text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
@@ -89,7 +89,7 @@ export default async function HeroCardPage({ params }: PageProps) {
               {heroItem.description || 'История этого героя пока не написана...'}
             </p>
             
-            {/* Сетка основных характеристик 📊 */}
+     
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <div className="bg-gray-900/50 p-4 rounded-2xl border border-red-900/30 text-center">
                 <div className="text-red-500 text-sm font-bold mb-1">❤️ Здоровье</div>
@@ -109,7 +109,7 @@ export default async function HeroCardPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Дополнительные параметры 🎲 */}
+       
             {heroItem.cubeBonus === 0 ? (
               <div></div>
             ) : (
@@ -120,13 +120,13 @@ export default async function HeroCardPage({ params }: PageProps) {
             )}
            
 
-            {/* Блок уникальных способностей (Skills) ✨ */}
+          
             <div className="mt-auto">
               <h3 className="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Уникальные способности</h3>
               
               {heroItem.skills && heroItem.skills.length > 0 ? (
                 <div className="space-y-3">
-                  {/* 🛠️ Железобетонная инлайн-типизация skill: SkillItem для прохождения сборки */}
+                
                   {heroItem.skills.map((skill: SkillItem) => (
                     <div key={skill.id} className="bg-gray-900/80 p-4 rounded-xl border border-gray-700">
                       <div className="font-bold text-amber-400 text-lg">{skill.skillName}</div>

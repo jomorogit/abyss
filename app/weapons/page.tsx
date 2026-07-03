@@ -3,15 +3,15 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
-// 🎯 Автоматически выводим точный тип элемента массива, который возвращает Prisma для оружия
+
 type WeaponItem = Awaited<ReturnType<typeof prisma.weapon.findMany>>[number];
 
 export default async function WeaponsPage() {
-  // 📦 Строго типизируем массив, чтобы внутри map работал автокомплит и не было ошибок сборки
+ 
   let weaponsArray: WeaponItem[] = [];
 
   try {
-    // Получаем список оружия из базы
+  
     weaponsArray = await prisma.weapon.findMany({});
   } catch (error) {
     console.error("Ошибка при загрузке оружия:", error);
@@ -30,15 +30,15 @@ export default async function WeaponsPage() {
     <div className="p-6 bg-gray-900 min-h-screen">
       <h1 className="text-2xl font-bold text-white mb-6">Оружейная</h1>
       
-      {/* Сетка для карточек */}
+    
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {weaponsArray.map((weapon) => (
           <Link 
-            href={`/weapons/${weapon.id}`} // Ссылка на страницу конкретного клинка
+            href={`/weapons/${weapon.id}`} 
             key={weapon.id} 
             className="flex flex-col bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg hover:border-orange-500/50 transition-colors duration-300 group"
           >
-            {/* Изображение оружия */}
+           
             <div className="relative h-80 bg-gray-950 flex items-center justify-center overflow-hidden border-b border-gray-700">
               {weapon.image ? (
                 <Image 
@@ -60,7 +60,7 @@ export default async function WeaponsPage() {
               </span>
             </div>
 
-            {/* Контентная часть карточки */}
+           
             <div className="p-4 flex flex-col flex-grow">
               <h2 className="text-2xl font-bold text-white mb-2 line-clamp-1 group-hover:text-orange-400 transition-colors">
                 {weapon.name}
@@ -70,7 +70,7 @@ export default async function WeaponsPage() {
                 {weapon.description || 'Клинок без истории... 📜'}
               </p>
 
-              {/* Характеристики оружия */}
+          
               <div className="space-y-2 border-t border-gray-700/50 pt-3 mb-4 text-sm">
                 <div className="flex justify-between items-center bg-gray-900/50 px-3 py-2 rounded-lg border border-gray-800">
                   <span className="text-gray-400 uppercase text-xs font-bold tracking-wider">Урон</span>
@@ -85,7 +85,7 @@ export default async function WeaponsPage() {
                 </div>
               </div>
 
-              {/* Футер карточки с ценами */}
+             
               <div className="flex flex-col gap-2 border-t border-gray-700 pt-3 mt-auto">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-500 text-sm uppercase tracking-widest font-bold">Покупка</span>

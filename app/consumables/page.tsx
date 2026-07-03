@@ -3,11 +3,11 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
-// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma для расходников
+
 type ConsumableItem = Awaited<ReturnType<typeof prisma.consumables.findMany>>[number];
 
 export default async function ConsumablesPage() {
-  // 📦 Строго типизируем массив, чтобы TypeScript знал структуру полей объекта в цикле map
+
   let consumablesArray: ConsumableItem[] = [];
 
   try {

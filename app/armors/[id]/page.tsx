@@ -4,19 +4,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface PageProps {
-  params: Promise<{ id: string }>; // В Next.js 15+ params — это Promise
+  params: Promise<{ id: string }>; 
 }
 
 export default async function ArmorCardPage({ params }: PageProps) {
-  // 1. Ждем получения динамического id из URL ⏳
+  
   const { id } = await params;
 
-  // 2. Ищем конкретную броню в базе данных 🗄️
+ 
   const armorItem = await prisma.armor.findUnique({
     where: { id: id },
   });
 
-  // 3. Если броня не найдена 🛑
+ 
   if (!armorItem) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
@@ -32,13 +32,13 @@ export default async function ArmorCardPage({ params }: PageProps) {
     );
   }
 
-  // 4. Отрисовка большая страницы предмета ✨
+  
   return (
     <div className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 text-white">
       {/* Ограничитель ширины для больших экранов */}
       <div className="max-w-6xl mx-auto">
         
-        {/* Кнопка "Назад" 🔙 */}
+       
         <Link 
           href="/armors" 
           className="inline-flex items-center text-gray-400 hover:text-amber-400 mb-8 transition-colors font-medium"
@@ -46,13 +46,13 @@ export default async function ArmorCardPage({ params }: PageProps) {
           <span className="mr-2 text-xl">←</span> Вернуться к списку снаряжения
         </Link>
 
-        {/* Главный контейнер предмета */}
+        
         <div className="bg-gray-800 border border-gray-700 rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row">
           
-          {/* Левая часть: Огромное изображение 🖼️ */}
+         
           <div className="relative w-full lg:w-1/2 h-[400px] lg:h-[600px] bg-gray-950/50 p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-700">
             
-            {/* Бейджи поверх картинки */}
+           
             <div className="absolute top-6 left-6 flex flex-col gap-3 z-10">
               {armorItem.type && (
                 <span className="bg-gray-800/90 text-gray-300 text-sm font-bold px-4 py-2 rounded-lg backdrop-blur-md border border-gray-600 shadow-lg">
@@ -64,7 +64,7 @@ export default async function ArmorCardPage({ params }: PageProps) {
               </span>
             </div>
 
-            {/* Сама картинка */}
+           
             <div className="relative w-full h-full">
               {armorItem.image ? (
                 <Image 
@@ -84,7 +84,7 @@ export default async function ArmorCardPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Правая часть: Подробная информация 📝 */}
+        
           <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col">
             
             <h1 className="text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
@@ -95,10 +95,10 @@ export default async function ArmorCardPage({ params }: PageProps) {
               {armorItem.description || 'Загадочный элемент экипировки. Описание утеряно в веках...'}
             </p>
             
-            {/* Сетка характеристик (Грид) 📊 */}
+           
             <div className="grid grid-cols-2 gap-4 mb-10">
               
-              {/* Показатель брони */}
+            
               <div className="bg-gray-900/50 p-5 rounded-2xl border border-gray-700/50">
                 <div className="text-gray-500 text-sm font-medium mb-1 uppercase tracking-wider">🛡️ Блок урона</div>
                 <div className="text-2xl font-black text-white">{armorItem.damageBlock}</div>
@@ -114,7 +114,7 @@ export default async function ArmorCardPage({ params }: PageProps) {
 
             </div>
 
-            {/* Футер с ценой покупки и продажи */}
+        
             <div className="pt-8 border-t border-gray-700 flex flex-row gap-8 mt-auto">
               <div>
                 <div className="text-gray-500 text-sm font-medium mb-1 uppercase tracking-wider">Покупка</div>

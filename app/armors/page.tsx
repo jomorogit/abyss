@@ -1,13 +1,13 @@
 import React from 'react'
 import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
-import Link from 'next/link'; // 🔗 Импортируем компонент для ссылок
+import Link from 'next/link'; 
 
-// 🎯 Хитрый трюк: TypeScript сам выведет точный тип элемента массива, который возвращает Prisma!
+
 type ArmorItem = Awaited<ReturnType<typeof prisma.armor.findMany>>[number];
 
 export default async function Page() {
-  // Теперь массив строго типизирован, и ошибка исчезнет навсегда
+ 
   let armorArray: ArmorItem[] = [];
 
   try {
@@ -33,11 +33,11 @@ export default async function Page() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {armorArray.map((item) => (
           <Link 
-            href={`/armors/${item.id}`} // 🎯 Формируем динамическую ссылку прямо тут
+            href={`/armors/${item.id}`} 
             key={item.id} 
             className="flex flex-col bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg hover:border-amber-500/50 transition-colors duration-300"
           >
-            {/* Изображение брони */}
+         
             <div className="relative h-80 bg-gray-950 flex items-center justify-center overflow-hidden border-b border-gray-700">
               {item.image ? (
                 <Image 
@@ -53,21 +53,20 @@ export default async function Page() {
                   Нет изображения
                 </div>
               )}
-              
-              {/* Тип брони (Heavy, Light, Cloth) */}
+                 
               {item.type && (
                 <span className="absolute top-3 left-3 z-10 bg-gray-900/80 text-gray-300 text-xs font-semibold px-2.5 py-1 rounded-md backdrop-blur-sm border border-gray-700">
                   {item.type}
                 </span>
               )}
 
-              {/* Тир/Ранг брони */}
+          
               <span className="absolute top-3 right-3 z-10 bg-amber-500/90 text-gray-950 text-xl font-bold px-2.5 py-1 rounded-md shadow-sm">
                 Tier {item.tier}
               </span>
             </div>
 
-            {/* Контентная часть карточки */}
+          
             <div className="p-4 flex flex-col flex-grow">
               <h2 className="text-2xl font-bold text-white mb-2 line-clamp-1">
                 {item.name}
@@ -77,7 +76,7 @@ export default async function Page() {
                 {item.description || 'Описание отсутствует.'}
               </p>
 
-              {/* Характеристики */}
+          
               <div className="space-y-2 border-t border-gray-700/50 pt-3 mb-4 text-xs tracking-wide">
                 
                <div className="flex justify-between">
@@ -93,7 +92,7 @@ export default async function Page() {
                 </div>
               </div>
 
-              {/* Футер карточки с ценами 💶 */}
+            
               <div className="flex flex-col gap-2 border-t border-gray-700 pt-3 mt-auto">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400 text-sm uppercase tracking-wider">Покупка:</span>

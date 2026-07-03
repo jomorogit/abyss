@@ -10,15 +10,15 @@ interface PageProps {
 export default async function EnemyCardPage({ params }: PageProps) {
   const { id } = await params;
 
-  // Ищем врага + подтягиваем категорию лута (если есть связь) 🗄️
+ 
   const enemyItem = await prisma.enemy.findUnique({
     where: { id: id },
     include: {
-      loot: true, // Включаем связанные данные о луте
+      loot: true, 
     }
   });
 
-  // Если враг не найден 🛑
+  
   if (!enemyItem) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
@@ -34,14 +34,14 @@ export default async function EnemyCardPage({ params }: PageProps) {
     );
   }
 
-  // Переводим шанс лута в проценты (например, 0.5 -> 50%)
+ 
   const lootChancePercent = Math.round(enemyItem.lootChance * 100);
 
   return (
     <div className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 text-white">
       <div className="max-w-6xl mx-auto">
         
-        {/* Кнопка "Назад" 🔙 */}
+        
         <Link 
           href="/enemys" 
           className="inline-flex items-center text-gray-400 hover:text-red-500 mb-8 transition-colors font-medium"
@@ -51,10 +51,10 @@ export default async function EnemyCardPage({ params }: PageProps) {
 
         <div className="bg-gray-800 border border-red-900/50 rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(153,27,27,0.2)] flex flex-col lg:flex-row">
           
-          {/* Левая часть: Изображение Монстра 🖼️ */}
+        
           <div className="relative w-full lg:w-1/2 h-[400px] lg:h-[700px] bg-gray-950 p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-red-900/30">
             
-            {/* Уровень угрозы */}
+         
             <div className="absolute top-6 left-6 flex flex-col gap-3 z-10">
               <span className="bg-red-600/90 text-white text-xl font-black px-4 py-2 rounded-lg backdrop-blur-md shadow-lg border border-red-500">
                 Угроза: Tier {enemyItem.tier}
@@ -80,10 +80,10 @@ export default async function EnemyCardPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Правая часть: Подробная информация 📝 */}
+         
           <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col relative overflow-hidden">
             
-            {/* Кровавый градиент на фоне */}
+           
             <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/5 rounded-full blur-3xl -z-10"></div>
 
             <h1 className="text-4xl lg:text-5xl font-extrabold text-red-500 mb-6 leading-tight drop-shadow-md">
@@ -94,7 +94,7 @@ export default async function EnemyCardPage({ params }: PageProps) {
               {enemyItem.description || 'Об этом существе нет записей в архивах...'}
             </p>
             
-            {/* Сетка боевых характеристик 📊 */}
+        
             <div className="grid grid-cols-3 gap-4 mb-8">
               <div className="bg-gray-900 p-4 rounded-xl border border-red-900/50 text-center">
                 <div className="text-red-500 text-sm font-bold mb-1 uppercase">❤️ Здоровье</div>
@@ -110,7 +110,7 @@ export default async function EnemyCardPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Способность Врага ✨ */}
+         
             {enemyItem.skill && (
               <div className="bg-red-950/30 p-5 rounded-2xl border border-red-900/50 mb-8">
                 <h3 className="text-red-400 text-sm font-bold uppercase tracking-wider mb-2">☠️ Смертоносная способность</h3>
@@ -118,7 +118,7 @@ export default async function EnemyCardPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Бонус кубика 🎲 */}
+           
             {enemyItem.cubeBonus > 0 && (
               <div className="bg-indigo-900/20 p-4 rounded-xl border border-indigo-900/50 mb-8 flex justify-between items-center">
                 <span className="text-indigo-400 font-bold uppercase text-sm tracking-wider">🎲 Усиление броска (Бонус)</span>
@@ -126,7 +126,7 @@ export default async function EnemyCardPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Блок Лута 💰 */}
+           
             <div className="mt-auto border-t border-red-900/30 pt-6">
               <h3 className="text-xl font-bold text-white mb-4"> Возможная добыча</h3>
               <div className="flex items-center justify-between bg-gray-900 p-4 rounded-xl border border-gray-700">

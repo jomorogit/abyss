@@ -3,15 +3,15 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
-// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma
+
 type ArtifactItem = Awaited<ReturnType<typeof prisma.artifact.findMany>>[number];
 
 export default async function ArtifactsPage() {
-  // 📦 Явно указываем массив объектов нашего выведенного типа
+ 
   let artifactsArray: ArtifactItem[] = [];
 
   try {
-    // Получаем артефакты из базы
+  
     artifactsArray = await prisma.artifact.findMany({});
   } catch (error) {
     console.error("Ошибка при загрузке артефактов:", error);
@@ -30,7 +30,7 @@ export default async function ArtifactsPage() {
     <div className="p-6 bg-gray-900 min-h-screen">
       <h1 className="text-2xl font-bold text-white mb-6">Древние Артефакты</h1>
       
-      {/* Сетка для карточек */}
+    
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {artifactsArray.map((artifact) => (
           <Link 
@@ -38,10 +38,10 @@ export default async function ArtifactsPage() {
             key={artifact.id} 
             className="flex flex-col bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg hover:border-purple-500/50 transition-colors duration-300 group"
           >
-            {/* Изображение артефакта */}
+          
             <div className="relative h-80 bg-gray-950 flex items-center justify-center overflow-hidden border-b border-gray-700">
               
-              {/* Мистическое свечение на фоне */}
+           
               <div className="absolute inset-0 bg-purple-900/10 group-hover:bg-purple-600/20 transition-colors duration-500 blur-xl z-0"></div>
 
               {artifact.image ? (
@@ -59,20 +59,20 @@ export default async function ArtifactsPage() {
                 </div>
               )}
               
-              {/* Тип артефакта */}
+             
               {artifact.type && (
                 <span className="absolute top-3 left-3 z-20 bg-gray-900/80 text-purple-400 text-xs font-bold px-2.5 py-1 rounded-md border border-purple-900/50 shadow-sm uppercase tracking-wider">
                    {artifact.type}
                 </span>
               )}
 
-              {/* Тир артефакта */}
+           
               <span className="absolute top-3 right-3 z-20 bg-fuchsia-600/90 text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-sm">
                 Tier {artifact.tier}
               </span>
             </div>
 
-            {/* Контентная часть карточки */}
+         
             <div className="p-4 flex flex-col flex-grow z-10 relative">
               <h2 className="text-2xl font-bold text-white mb-2 line-clamp-1 group-hover:text-purple-400 transition-colors">
                 {artifact.name}
@@ -82,7 +82,7 @@ export default async function ArtifactsPage() {
                 {artifact.description || 'Древняя реликвия, тайны которой еще не раскрыты...'}
               </p>
 
-              {/* Характеристики артефакта */}
+           
               <div className="space-y-2 border-t border-gray-700/50 pt-3 mb-4 text-sm">
                 
                 {artifact.skillPassive && (

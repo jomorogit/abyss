@@ -10,12 +10,12 @@ interface PageProps {
 export default async function ArtifactCardPage({ params }: PageProps) {
   const { id } = await params;
 
-  // Ищем артефакт в базе
+
   const artifactItem = await prisma.artifact.findUnique({
     where: { id: id },
   });
 
-  // Если артефакт не найден
+  
   if (!artifactItem) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
@@ -35,7 +35,7 @@ export default async function ArtifactCardPage({ params }: PageProps) {
     <div className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 text-white">
       <div className="max-w-6xl mx-auto">
         
-        {/* Кнопка "Назад" */}
+    
         <Link 
           href="/artifact" 
           className="inline-flex items-center text-gray-400 hover:text-purple-500 mb-8 transition-colors font-medium"
@@ -45,13 +45,13 @@ export default async function ArtifactCardPage({ params }: PageProps) {
 
         <div className="bg-gray-800 border border-gray-700 rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row relative">
           
-          {/* Левая часть: Изображение */}
+          
           <div className="relative w-full lg:w-1/2 h-[400px] lg:h-[700px] bg-gradient-to-b from-gray-900 to-gray-950 p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-700 overflow-hidden">
             
-            {/* Магическое свечение на фоне */}
+         
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-fuchsia-600/20 rounded-full blur-[80px] z-0"></div>
 
-            {/* Тип и Тир артефакта */}
+         
             <div className="absolute top-6 left-6 z-30 flex flex-col gap-3 pointer-events-none">
               <span className="bg-purple-950/80 text-purple-400 text-sm font-black px-4 py-2 rounded-lg backdrop-blur-md border border-purple-900/50 shadow-lg uppercase tracking-widest">
                 {artifactItem.type}
@@ -79,7 +79,7 @@ export default async function ArtifactCardPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Правая часть: Подробная информация */}
+         
           <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col relative z-10">
             
             <h1 className="text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight drop-shadow-md">
@@ -90,7 +90,7 @@ export default async function ArtifactCardPage({ params }: PageProps) {
               {artifactItem.description || 'Древняя сила пульсирует внутри этого предмета...'}
             </p>
             
-            {/* Статус дропа */}
+        
             <div className="bg-gray-900/50 p-4 rounded-xl border border-gray-700/50 flex justify-between items-center mb-8">
               <div className="text-gray-500 text-sm font-bold uppercase tracking-widest">Способ получения</div>
               <div className={`text-lg font-black ${artifactItem.isDroppable ? 'text-green-400' : 'text-gray-400'}`}>
@@ -98,10 +98,10 @@ export default async function ArtifactCardPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Блоки Способностей */}
+         
             <div className="space-y-4 mb-8">
               
-              {/* Пассивный навык */}
+             
               {artifactItem.skillPassive && (
                 <div className="bg-fuchsia-950/20 p-5 rounded-2xl border border-fuchsia-900/50 shadow-inner">
                   <div className="text-fuchsia-400 font-bold text-sm uppercase tracking-wider mb-2 flex items-center gap-2">
@@ -111,7 +111,7 @@ export default async function ArtifactCardPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* Активный навык */}
+          
               {artifactItem.skillActive && (
                 <div className="bg-purple-950/30 p-5 rounded-2xl border border-purple-800/50 shadow-inner">
                   <div className="text-purple-400 font-bold text-sm uppercase tracking-wider mb-2 flex items-center gap-2">
@@ -128,7 +128,7 @@ export default async function ArtifactCardPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* Футер с ценой покупки и продажи */}
+         
             <div className="pt-8 border-t border-gray-700 flex flex-row gap-8 mt-auto">
               <div>
                 <div className="text-gray-500 text-sm font-bold mb-1 uppercase tracking-widest">Покупка</div>

@@ -3,15 +3,15 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
-// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma для героев
+
 type HeroItem = Awaited<ReturnType<typeof prisma.hero.findMany>>[number];
 
 export default async function HeroesPage() {
-  // 📦 Строго типизируем массив, чтобы избежать ошибки неявного типа any
+
   let heroesArray: HeroItem[] = [];
 
   try {
-    // Получаем героев из базы 🗄️
+  
     heroesArray = await prisma.hero.findMany({});
   } catch (error) {
     console.error("Ошибка при загрузке героев:", error);
@@ -30,15 +30,15 @@ export default async function HeroesPage() {
     <div className="p-6 bg-gray-900 min-h-screen">
       <h1 className="text-2xl font-bold text-white mb-6">Зал Героев</h1>
       
-      {/* Сетка для карточек */}
+    
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {heroesArray.map((hero) => (
           <Link 
-            href={`/heros/${hero.id}`} // 🎯 Ссылка на страницу конкретного героя
+            href={`/heros/${hero.id}`}
             key={hero.id} 
             className="flex flex-col bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg hover:border-blue-500/50 transition-colors duration-300"
           >
-            {/* Изображение героя 🖼️ */}
+        
             <div className="relative h-80 bg-gray-950 flex items-center justify-center overflow-hidden border-b border-gray-700">
               {hero.image ? (
                 <Image 
@@ -55,7 +55,7 @@ export default async function HeroesPage() {
                 </div>
               )}
               
-              {/* Бейдж кубика 🎲 */}
+           
               {hero.cubeBonus > 0 && (
                 <span className="absolute top-3 left-3 z-10 bg-indigo-600/90 text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-sm">
                   🎲 Бонус кубика: +{hero.cubeBonus}
@@ -63,7 +63,7 @@ export default async function HeroesPage() {
               )}
             </div>
 
-            {/* Контентная часть карточки 📝 */}
+           
             <div className="p-4 flex flex-col flex-grow">
               <h2 className="text-2xl font-bold text-white mb-2 line-clamp-1">
                 {hero.name}
@@ -73,7 +73,7 @@ export default async function HeroesPage() {
                 {hero.description || 'История этого героя неизвестна...'}
               </p>
 
-              {/* Характеристики (Мини-статы) 📊 */}
+           
               <div className="grid grid-cols-2 gap-2 border-t border-gray-700/50 pt-3 mt-auto text-sm">
                 <div className="flex justify-between items-center bg-gray-900/50 p-2 rounded">
                   <span className="text-red-400">❤️ HP</span>

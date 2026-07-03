@@ -10,12 +10,12 @@ interface PageProps {
 export default async function WeaponCardPage({ params }: PageProps) {
   const { id } = await params;
 
-  // Ищем оружие в базе
+
   const weaponItem = await prisma.weapon.findUnique({
     where: { id: id },
   });
 
-  // Если оружие не найдено
+  
   if (!weaponItem) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
@@ -35,7 +35,7 @@ export default async function WeaponCardPage({ params }: PageProps) {
     <div className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 text-white">
       <div className="max-w-6xl mx-auto">
         
-        {/* Кнопка "Назад" */}
+      
         <Link 
           href="/weapons" 
           className="inline-flex items-center text-gray-400 hover:text-orange-500 mb-8 transition-colors font-medium"
@@ -48,7 +48,7 @@ export default async function WeaponCardPage({ params }: PageProps) {
           {/* Левая часть: Изображение */}
           <div className="relative w-full lg:w-1/2 h-[400px] lg:h-[700px] bg-gradient-to-b from-gray-900 to-gray-950 p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-700">
             
-            {/* Тип оружия */}
+       
             <div className="absolute top-6 left-6 z-10">
               <span className="bg-orange-950/80 text-orange-400 text-sm font-black px-4 py-2 rounded-lg backdrop-blur-md border border-orange-900/50 shadow-lg uppercase tracking-widest">
                 {weaponItem.type}
@@ -76,7 +76,7 @@ export default async function WeaponCardPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Правая часть: Подробная информация */}
+         
           <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col">
             
             <h1 className="text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
@@ -87,7 +87,7 @@ export default async function WeaponCardPage({ params }: PageProps) {
               {weaponItem.description || 'Холодная сталь, жаждущая битвы...'}
             </p>
             
-            {/* Урон и Выпадение */}
+         
             <div className="grid grid-cols-2 gap-4 mb-8">
               <div className="bg-orange-950/20 p-5 rounded-2xl border border-orange-900/30 flex flex-col items-center justify-center shadow-inner">
                 <div className="text-orange-500/70 text-sm font-bold mb-1 uppercase tracking-widest">Базовый урон</div>
@@ -102,9 +102,9 @@ export default async function WeaponCardPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Блоки Способностей */}
+          
             <div className="space-y-4 mb-8">
-              {/* Активный навык */}
+             
               {weaponItem.skillActive && (
                 <div className="bg-red-950/30 p-4 rounded-xl border-l-4 border-red-500">
                   <div className="text-red-400 font-bold text-sm uppercase tracking-wider mb-1 flex items-center gap-2">
@@ -114,7 +114,7 @@ export default async function WeaponCardPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* Пассивный навык */}
+             
               {weaponItem.skillPassive && (
                 <div className="bg-indigo-950/30 p-4 rounded-xl border-l-4 border-indigo-500">
                   <div className="text-indigo-400 font-bold text-sm uppercase tracking-wider mb-1 flex items-center gap-2">
@@ -125,7 +125,7 @@ export default async function WeaponCardPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* Футер с ценой покупки и продажи */}
+           
             <div className="pt-8 border-t border-gray-700 flex flex-row gap-8 mt-auto">
               <div>
                 <div className="text-gray-500 text-sm font-bold mb-1 uppercase tracking-widest">Покупка</div>

@@ -3,11 +3,11 @@ import { prisma } from '@/lib/db';
 import Image from 'next/image'; 
 import Link from 'next/link';
 
-// 🎯 Выводим точный тип одного элемента из возвращаемого массива Prisma для сумок
+
 type BagItem = Awaited<ReturnType<typeof prisma.bags.findMany>>[number];
 
 export default async function BagsPage() {
-  // 📦 Строго типизируем массив, чтобы map знал все свойства объекта
+ 
   let bagsArray: BagItem[] = [];
 
   try {
